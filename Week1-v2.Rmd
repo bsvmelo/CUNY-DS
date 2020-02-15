@@ -1,0 +1,47 @@
+---
+title: "HW-WEEK-1"
+author: "Bruno de Melo"
+date: "2/2/2020"
+output: html_document
+---
+
+# Overview
+
+Article shows a graphical tool inspired by FiveThirtyEight's MESSI* analysis that compares how every athlete played in every men’s World Cup from 1966 to 2018 by generating statistical fingerprints of 5,899 World Cup performance.
+
+User inputs a player name and doppelgangers (similar players) are displayed on the right side of the screen. On the left side of the screen, a radar plot shows various metrics associated with that player.
+
+MESSI here stands for Modeled Event Soccer Similarity Index (MESSI) and is a system that evaluates and compares player performances across 16 metrics. 
+
+Each metric is measured on a per-match basis, and for each metric we calculate a z-score — the number of standard deviations above or below average for that World Cup. The similarity between players’ performances is based solely on the average between each of their 16 z-scores 
+
+This is the article link:
+https://projects.fivethirtyeight.com/world-cup-comparisons/
+
+```{r}
+
+soccer <- read.csv(file = 'https://projects.fivethirtyeight.com/soccer-api/international/2018/world_cup_comparisons.csv')
+```
+
+Dataset contains player name, country, year played and 16 metrics used by the article to graphically compare players.
+
+I'll now create a subset that contains Player, Season, Country and Average of All Z-score. 
+
+```{r}
+soccer_subset<-subset(soccer, select=c(player,team,season))
+soccer_subset$mean <- rowMeans(soccer[,4:19])
+
+```
+## Results Display - Top 5 player
+
+```{r}
+head(soccer_subset[order(-soccer_subset$mean),], n=5)
+
+```
+
+
+
+# Conclusion
+
+Data set only contains z-score, not sure how to reproduce the article's radar plots since they show statistics per match. 
+
